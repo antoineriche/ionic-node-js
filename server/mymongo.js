@@ -11,20 +11,15 @@ var connect = function(rootCallback, childCallback){
       let jsonResp = {};
       if (err) {
         console.log(err);
-        jsonResp.success = false;
-        jsonResp.error = { message: err.message };
-        rootCallback(jsonResp);
+        rootCallback(errorJSON(err));
       } else {
         childCallback(db, function(err, data){
           if(!err){
-            jsonResp.success = true;
-            jsonResp.data = data;
+            rootCallback(successJSON(data));
           } else {
-              console.log(err);
-              jsonResp.success = true;
-              jsonResp.error = { message: err.message };
+            console.log(err);
+            rootCallback(errorJSON(err));
           }
-          rootCallback(jsonResp);
         });
       }
       db.close();
@@ -60,6 +55,22 @@ var postData = function(data, callback){
         next(err, true);
     });
   });
+}
+
+var successJSON = function(data){
+  return {
+    success: true,
+    data: data
+  };
+}
+
+var errorJSON = function(err){
+  return {
+    success: false,
+    error: {
+      message: err.message
+    }
+  };
 }
 
 exports.getUserPosts  = getUserPosts;
