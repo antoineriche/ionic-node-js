@@ -7,9 +7,26 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item>
-    <ion-label position="fixed">IP address</ion-label>
-    <ion-input [(ngModel)]="ipAddress" name="ipAddress"></ion-input>
-  </ion-item>
-  <ion-button expand="block" (click)="myServerRequest()">Server request</ion-button>
+  <form [formGroup]="ipAddressForm">
+    <ion-item>
+      <ion-label position="fixed">IP address</ion-label>
+      <ion-input formControlName="ipAddress"></ion-input>
+    </ion-item>
+  </form>
+  <form [formGroup]="userForm">
+    <ion-item>
+      <ion-label position="fixed">User ID</ion-label>
+      <ion-input formControlName="userId"></ion-input>
+    </ion-item>
+  </form>
+  <form [formGroup]="dataForm">
+    <ion-item>
+      <ion-label position="fixed">Message</ion-label>
+      <ion-input formControlName="message"></ion-input>
+    </ion-item>
+  </form>
+
+  <ion-button expand="block" (click)="myServerRequest()" [disabled]="!ipAddressForm.valid">Server request</ion-button>
+  <ion-button color="dark" expand="block" (click)="getFavorite()" [disabled]="(!userForm.valid || !ipAddressForm.valid)">Get favorite</ion-button>
+  <ion-button color="danger" expand="block" (click)="postToServer()" [disabled]="(!ipAddressForm.valid || !userForm.valid || !dataForm.valid)">Post data</ion-button>
 </ion-content>

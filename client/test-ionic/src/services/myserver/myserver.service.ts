@@ -36,11 +36,26 @@ export class MyserverService {
     return body || { };
   }
 
+  postToServer(ipAddress: string, data: any): Observable<any> {
+    console.log('postToServer');
+    var url = "http://"+ipAddress+":8080/sportpoint";
+    return this.http.post(url, data).pipe(
+      map(this.extractData), catchError(this.handleError)
+    );
+  }
+
+  getFavorite(ipAddress: string, userId: string): Observable<any> {
+    console.log('getFavorite');
+    var url = "http://"+ipAddress+":8080/"+userId+"/favorite";
+    return this.http.get(url).pipe(
+      map(this.extractData), catchError(this.handleError)
+    );
+  }
+
   checkServer(ipAddress: string): Observable<any> {
     console.log('checkServer');
     var url = "http://"+ipAddress+":8080";
 
-    // url = "http://cors-anywhere.herokuapp.com/"+url;
     return this.http.get(url).pipe(
       map(this.extractData), catchError(this.handleError)
     );
