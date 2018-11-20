@@ -9,7 +9,7 @@
 <ion-content padding>
   <form [formGroup]="ipAddressForm">
     <ion-item>
-      <ion-label position="fixed">IP address</ion-label>
+      <ion-label position="fixed">Server IP</ion-label>
       <ion-input formControlName="ipAddress"></ion-input>
     </ion-item>
   </form>
@@ -26,7 +26,7 @@
     </ion-item>
   </form>
 
-  <ion-button expand="block" (click)="myServerRequest()" [disabled]="!ipAddressForm.valid">Server request</ion-button>
-  <ion-button color="dark" expand="block" (click)="getFavorite()" [disabled]="(!userForm.valid || !ipAddressForm.valid)">Get favorite</ion-button>
-  <ion-button color="danger" expand="block" (click)="postToServer()" [disabled]="(!ipAddressForm.valid || !userForm.valid || !dataForm.valid)">Post data</ion-button>
+  <ion-button expand="block" (click)="myServerRequest()" [disabled]="!ipAddressForm.valid">Get Bordeaux sport areas</ion-button>
+  <ion-button color="dark" expand="block" (click)="getFavorite()" [disabled]="(!userForm.valid || !ipAddressForm.valid)">Get user posts</ion-button>
+  <ion-button color="danger" expand="block" (click)="postToServer()" [disabled]="(!ipAddressForm.valid || !userForm.valid || !dataForm.valid)">Send message</ion-button>
 </ion-content>
