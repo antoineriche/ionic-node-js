@@ -36,9 +36,9 @@ export class MyserverService {
     return body || { };
   }
 
-  checkServer(): Observable<any> {
+  checkServer(ipAddress: string): Observable<any> {
     console.log('checkServer');
-    var url = "http://localhost:8080";
+    var url = "http://"+ipAddress+":8080";
 
     // url = "http://cors-anywhere.herokuapp.com/"+url;
     return this.http.get(url).pipe(

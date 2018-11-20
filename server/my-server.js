@@ -1,6 +1,7 @@
 var express = require('express');
 var cors = require('cors');
 var app = express();
+var https = require('https');
 var http = require('http').Server(app);
 var bodyParser = require('body-parser');
 
@@ -13,8 +14,15 @@ app.options('*', cors());
 
 app.get('/', function(req, res) {
 	console.log('someone is getting');
-	res.setHeader('Content-Type', 'text/html; charset=utf-8');
-	res.json({foo:'bar'});
+
+	https.get('https://jsonplaceholder.typicode.com/todos', (resp) => {
+		let data = '';
+
+	  	resp
+	  		.on('data', (chunk) => data += chunk)
+			.on('end', () => res.json(JSON.parse(data)))
+	  		.on("error", (err) => console.log("Error: " + err.message));
+	});
 });
 
 http.listen(8080, function(){

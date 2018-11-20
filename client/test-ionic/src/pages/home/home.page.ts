@@ -7,11 +7,17 @@ import { MyserverService } from '../../services/myserver/myserver.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  ipAddress: string = "192.168.1.91";
+
   constructor(private myserver: MyserverService){ }
 
   ngOnInit(){
     console.log('ngOnInit');
-    this.myserver.checkServer().subscribe(
+  }
+
+  myServerRequest(){
+    let ip = this.ipAddress;
+    this.myserver.checkServer(ip).subscribe(
       data => console.log(data)
     );
   }
