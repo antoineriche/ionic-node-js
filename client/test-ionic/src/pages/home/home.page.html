@@ -29,7 +29,7 @@
   <ion-button expand="block" (click)="myServerRequest()" [disabled]="!ipAddressForm.valid">Get Bordeaux sport areas</ion-button>
   <ion-button color="light" expand="block" (click)="getAllPosts()" [disabled]="!ipAddressForm.valid">Get all posts</ion-button>
   <ion-button color="dark" expand="block" (click)="getUserPosts()" [disabled]="(!userForm.valid || !ipAddressForm.valid)">Get user posts</ion-button>
-  <ion-button color="danger" expand="block" (click)="postToServer()" [disabled]="(!ipAddressForm.valid || !userForm.valid || !dataForm.valid)">Send message</ion-button>
+  <ion-button color="danger" expand="block" (click)="postToServer()" [disabled]="(!ipAddressForm.valid || !userForm.valid || !dataForm.valid)">Send post</ion-button>
 
   <div *ngIf="error">
     <ion-item>
@@ -67,12 +67,8 @@
     <ion-card *ngFor="let post of usrPosts">
       <ion-card-header>
         <ion-card-subtitle>{{friendlyDate(post.date)}}</ion-card-subtitle>
-        <!-- <ion-card-title>{{msg.message}}</ion-card-title> -->
+        <ion-card-title>{{post.message}}</ion-card-title>
       </ion-card-header>
-
-      <ion-card-content>
-        {{post.message}}
-      </ion-card-content>
     </ion-card>
   </div>
 
