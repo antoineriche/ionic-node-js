@@ -2,6 +2,6 @@
 Cross-platform application and Node.js server
 
 ## Installation
-
-### MongoDB
+### Server
+#### MongoDB
 Download and install MongoDb.<br/>
