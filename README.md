@@ -26,5 +26,5 @@ You can get all the sport areas of Bordeaux (France) on the client by clicking o
 ### Send message to server
 You can send messages to server by specifiying a user id and a string (at least three characters) and clicking on 'Send Message' from the home screen.
 
-### Get my messages
+### Get user messages
 You can view the messages posted by any user by specifying his id and clickong on 'Get user posts'. 
