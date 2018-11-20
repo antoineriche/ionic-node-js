@@ -1,0 +1,10 @@
+{
+  "name": "my-ionic-server",
+  "version": "0.0.1",
+  "description": "first ionic server",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4"
+  }
+}
