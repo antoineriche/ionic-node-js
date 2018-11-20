@@ -26,7 +26,7 @@ You can get all the sport areas of Bordeaux (France) on the client by clicking o
 ### Create post on server
 You can create post on server by specifiying a user id and a string (at least three characters) and clicking on 'Send post' from the home screen.
 
-### Get user posts
+### Get all posts
 You can get all posts by clicking on 'Get all posts' from the home screen.
 
 ### Get user posts
