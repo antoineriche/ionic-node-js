@@ -12,7 +12,32 @@ var connect = function(callback){
     });
 }
 
-var getFavorites = function(userId, callback){
+var getAllPosts = function(callback){
+  connect(function(err, db){
+    let jsonResp = {};
+    if (err) {
+      console.log(err);
+      jsonResp.success = false;
+      jsonResp.error = { message: err.message };
+      callback(jsonResp);
+    } else {
+        db.db(DB_NAME).collection(SPORTPOINTS_COLLECTION).find().toArray(
+          function(err, favorites){
+            if(!err){
+              jsonResp.success = true;
+              jsonResp.data = favorites;
+            } else {
+                console.log(err);
+                jsonResp.success = true;
+                jsonResp.error = { message: err.message };
+            }
+            callback(jsonResp);
+        });
+      }
+  });
+}
+
+var getUserPosts = function(userId, callback){
   connect(function(err, db){
     let jsonResp = {};
     if (err) {
@@ -61,5 +86,6 @@ var postData = function(data, callback){
   });
 }
 
-exports.getFavorites  = getFavorites;
+exports.getUserPosts  = getUserPosts;
+exports.getAllPosts   = getAllPosts;
 exports.postData      = postData;

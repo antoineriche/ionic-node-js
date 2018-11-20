@@ -14,8 +14,9 @@ export class HomePage {
   userForm:       FormGroup;
   dataForm:       FormGroup;
   message:        string = "";
-  usrMsg:         any[];
+  usrPosts:       any[];
   sportPoints:    any[];
+  allPosts:       any[];
   error:          string;
 
   constructor(
@@ -44,7 +45,8 @@ export class HomePage {
         console.log(resp);
         if(resp.success){
           this.sportPoints = resp.data;
-          this.usrMsg = null;
+          this.allPosts = null;
+          this.usrPosts = null;
         } else {
           this.error = resp.error.message;
         }
@@ -77,7 +79,24 @@ export class HomePage {
       resp => {
         console.log(resp);
         if(resp.success){
-          this.usrMsg = resp.data;
+          this.usrPosts = resp.data;
+          this.allPosts = null;
+          this.sportPoints = null;
+        } else {
+          this.error = resp.error.message;
+        }
+      }
+    );
+  }
+
+  getAllPosts(){
+    let ip      = this.ipAddressForm.value.ipAddress;
+    this.myserver.getAllPosts(ip).subscribe(
+      resp => {
+        console.log(resp);
+        if(resp.success){
+          this.allPosts = resp.data;
+          this.usrPosts = null;
           this.sportPoints = null;
         } else {
           this.error = resp.error.message;

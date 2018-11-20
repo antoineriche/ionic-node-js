@@ -59,20 +59,20 @@ app.get('/', function(req, res){
 .get('/posts', function(req, res){
 	var ip = req.connection.remoteAddress;
 	var userId = req.params.userId;
-	console.log('GET /' + userId + '/favorite from ' + ip);
+	console.log('GET /posts from ' + ip);
 
-	mymongo.getFavorites(userId, function(jsonArray){
-		console.log(jsonArray.data.length + ' favorites.');
+	mymongo.getAllPosts(function(jsonArray){
+		console.log(jsonArray.data.length + ' posts.');
 		res.json(jsonArray);
 	});
 })
 .get('/posts/:userId', function(req, res){
 	var ip = req.connection.remoteAddress;
 	var userId = req.params.userId;
-	console.log('GET /' + userId + '/favorite from ' + ip);
+	console.log('GET /posts/' + userId + ' from ' + ip);
 
-	mymongo.getFavorites(userId, function(jsonArray){
-		console.log(jsonArray.data.length + ' favorites.');
+	mymongo.getUserPosts(userId, function(jsonArray){
+		console.log(jsonArray.data.length + ' posts for user ' + userId + '.');
 		res.json(jsonArray);
 	});
 });

@@ -27,6 +27,7 @@
   </form>
 
   <ion-button expand="block" (click)="myServerRequest()" [disabled]="!ipAddressForm.valid">Get Bordeaux sport areas</ion-button>
+  <ion-button color="light" expand="block" (click)="getAllPosts()" [disabled]="!ipAddressForm.valid">Get all posts</ion-button>
   <ion-button color="dark" expand="block" (click)="getUserPosts()" [disabled]="(!userForm.valid || !ipAddressForm.valid)">Get user posts</ion-button>
   <ion-button color="danger" expand="block" (click)="postToServer()" [disabled]="(!ipAddressForm.valid || !userForm.valid || !dataForm.valid)">Send message</ion-button>
 
@@ -37,21 +38,40 @@
     </ion-item>
   </div>
 
-  <div *ngIf="usrMsg">
+  <div *ngIf="allPosts">
 
-    <ion-item *ngIf="usrMsg.length == 0">
+    <ion-item *ngIf="allPosts.length == 0">
       <ion-label position="fixed" color="danger">Error</ion-label>
       No post
     </ion-item>
 
-    <ion-card *ngFor="let msg of usrMsg">
+    <ion-card *ngFor="let post of allPosts">
       <ion-card-header>
-        <ion-card-subtitle>{{friendlyDate(msg.date)}}</ion-card-subtitle>
+        <ion-card-subtitle>{{friendlyDate(post.date)}}</ion-card-subtitle>
+        <ion-card-title>{{post.message}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        User ID: {{post.userId}}
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="usrPosts">
+
+    <ion-item *ngIf="usrPosts.length == 0">
+      <ion-label position="fixed" color="danger">Error</ion-label>
+      No post
+    </ion-item>
+
+    <ion-card *ngFor="let post of usrPosts">
+      <ion-card-header>
+        <ion-card-subtitle>{{friendlyDate(post.date)}}</ion-card-subtitle>
         <!-- <ion-card-title>{{msg.message}}</ion-card-title> -->
       </ion-card-header>
 
       <ion-card-content>
-        {{msg.message}}
+        {{post.message}}
       </ion-card-content>
     </ion-card>
   </div>
