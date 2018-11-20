@@ -23,8 +23,11 @@ Download and install IONIC and Cordova from https://ionicframework.com/docs/intr
 ### Get the sport areas of Bordeaux
 You can get all the sport areas of Bordeaux (France) on the client by clicking on 'Get Bordeaux sport areas' from the home screen.<br/>(source: http://odata.bordeaux.fr/v1/databordeaux/poisport/?format=json)
 
-### Send message to server
-You can send messages to server by specifiying a user id and a string (at least three characters) and clicking on 'Send Message' from the home screen.
+### Create post on server
+You can create post on server by specifiying a user id and a string (at least three characters) and clicking on 'Send post' from the home screen.
 
-### Get user messages
-You can view the messages posted by any user by specifying his id and clickong on 'Get user posts'. 
+### Get user posts
+You can get all posts by clicking on 'Get all posts' from the home screen.
+
+### Get user posts
+You can get posts of any user by specifying his id and clicking on 'Get user posts' from the home screen.
