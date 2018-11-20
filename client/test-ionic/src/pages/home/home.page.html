@@ -27,6 +27,52 @@
   </form>
 
   <ion-button expand="block" (click)="myServerRequest()" [disabled]="!ipAddressForm.valid">Get Bordeaux sport areas</ion-button>
-  <ion-button color="dark" expand="block" (click)="getFavorite()" [disabled]="(!userForm.valid || !ipAddressForm.valid)">Get user posts</ion-button>
+  <ion-button color="dark" expand="block" (click)="getUserPosts()" [disabled]="(!userForm.valid || !ipAddressForm.valid)">Get user posts</ion-button>
   <ion-button color="danger" expand="block" (click)="postToServer()" [disabled]="(!ipAddressForm.valid || !userForm.valid || !dataForm.valid)">Send message</ion-button>
+
+  <div *ngIf="error">
+    <ion-item>
+      <ion-label position="fixed" color="danger">Error</ion-label>
+      {{error}}
+    </ion-item>
+  </div>
+
+  <div *ngIf="usrMsg">
+
+    <ion-item *ngIf="usrMsg.length == 0">
+      <ion-label position="fixed" color="danger">Error</ion-label>
+      No post
+    </ion-item>
+
+    <ion-card *ngFor="let msg of usrMsg">
+      <ion-card-header>
+        <ion-card-subtitle>{{friendlyDate(msg.date)}}</ion-card-subtitle>
+        <!-- <ion-card-title>{{msg.message}}</ion-card-title> -->
+      </ion-card-header>
+
+      <ion-card-content>
+        {{msg.message}}
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="sportPoints">
+
+    <ion-item *ngIf="sportPoints.length == 0">
+      <ion-label position="fixed" color="danger">Error</ion-label>
+      No sport point
+    </ion-item>
+
+    <ion-card *ngFor="let point of sportPoints">
+      <ion-card-header>
+        <ion-card-subtitle>{{point.stheme}}</ion-card-subtitle>
+        <ion-card-title>{{point.nom}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        {{point.adresse}}
+      </ion-card-content>
+    </ion-card>
+  </div>
+
 </ion-content>

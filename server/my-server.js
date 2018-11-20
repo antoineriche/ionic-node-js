@@ -56,7 +56,17 @@ app.get('/', function(req, res){
 	  		});
 	});
 })
-.get('/:userId/favorite', function(req, res){
+.get('/posts', function(req, res){
+	var ip = req.connection.remoteAddress;
+	var userId = req.params.userId;
+	console.log('GET /' + userId + '/favorite from ' + ip);
+
+	mymongo.getFavorites(userId, function(jsonArray){
+		console.log(jsonArray.data.length + ' favorites.');
+		res.json(jsonArray);
+	});
+})
+.get('/posts/:userId', function(req, res){
 	var ip = req.connection.remoteAddress;
 	var userId = req.params.userId;
 	console.log('GET /' + userId + '/favorite from ' + ip);

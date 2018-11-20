@@ -44,9 +44,17 @@ export class MyserverService {
     );
   }
 
-  getFavorite(ipAddress: string, userId: string): Observable<any> {
-    console.log('getFavorite');
-    var url = "http://"+ipAddress+":8080/"+userId+"/favorite";
+  getUserPosts(ipAddress: string, userId: string): Observable<any> {
+    console.log('getUserPosts');
+    var url = "http://"+ipAddress+":8080/posts/"+userId;
+    return this.http.get(url).pipe(
+      map(this.extractData), catchError(this.handleError)
+    );
+  }
+
+  getAllPosts(ipAddress: string): Observable<any> {
+    console.log('getAllPosts');
+    var url = "http://"+ipAddress+":8080/posts";
     return this.http.get(url).pipe(
       map(this.extractData), catchError(this.handleError)
     );

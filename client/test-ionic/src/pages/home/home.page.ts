@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MyserverService } from '../../services/myserver/myserver.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators, FormArray } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +10,13 @@ import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Valida
 })
 export class HomePage {
 
-  ipAddressForm: FormGroup;
-  userForm: FormGroup;
-  dataForm: FormGroup;
-  message:      string = "";
+  ipAddressForm:  FormGroup;
+  userForm:       FormGroup;
+  dataForm:       FormGroup;
+  message:        string = "";
+  usrMsg:         any[];
+  sportPoints:    any[];
+  error:          string;
 
   constructor(
     private myserver: MyserverService,
@@ -36,7 +40,15 @@ export class HomePage {
   myServerRequest(){
     let ip = this.ipAddressForm.value.ipAddress;
     this.myserver.checkServer(ip).subscribe(
-      data => console.log(data)
+      resp => {
+        console.log(resp);
+        if(resp.success){
+          this.sportPoints = resp.data;
+          this.usrMsg = null;
+        } else {
+          this.error = resp.error.message;
+        }
+      }
     );
   }
 
@@ -48,12 +60,33 @@ export class HomePage {
       date    :     new Date().getTime(),
       userId  :   userId
     }
-    this.myserver.postToServer(ip, data).subscribe(data => console.log(data));
+    this.myserver.postToServer(ip, data).subscribe(resp => {
+      console.log(resp);
+      if(resp.success){
+        this.dataForm.value.message = '';
+      } else {
+        this.error = resp.error.message;
+      }
+    });
   }
 
-  getFavorite(){
+  getUserPosts(){
     let ip      = this.ipAddressForm.value.ipAddress;
     let userId  = this.userForm.value.userId;
-    this.myserver.getFavorite(ip, userId).subscribe( data => console.log(data));
+    this.myserver.getUserPosts(ip, userId).subscribe(
+      resp => {
+        console.log(resp);
+        if(resp.success){
+          this.usrMsg = resp.data;
+          this.sportPoints = null;
+        } else {
+          this.error = resp.error.message;
+        }
+      }
+    );
+  }
+
+  friendlyDate(date: number){
+      return new DatePipe('en-US').transform(date, 'EEEE dd MMMM yyyy, HH:mm');
   }
 }
