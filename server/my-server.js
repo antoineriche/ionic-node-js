@@ -13,7 +13,8 @@ app.use(cors());
 app.options('*', cors());
 
 app.get('/', function(req, res) {
-	console.log('someone is getting');
+	var ip = req.connection.remoteAddress;
+	console.log(ip + ' is getting');
 
 	https.get('https://jsonplaceholder.typicode.com/todos', (resp) => {
 		let data = '';
