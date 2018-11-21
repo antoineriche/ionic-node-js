@@ -14,6 +14,13 @@ Download and install NodeJS from https://nodejs.org/en/<br/>
 Download and install IONIC and Cordova from https://ionicframework.com/docs/intro/installation/<br/>
 
 ## Start
+### Start with script
+* Edit the  _MONGODB_FOLDER_ value to point the _mongodb/bin_ folder on your computer in _start-server.sh_.
+* Give the script _start-server.sh_ executable rights.
+* Run the script _start-server.sh_ from the root folder of the application.
+* Three new tabs will be opened on your terminal to monitor Node server, Mongo Daemon and Ionic client browser.
+
+### Start components manually
 * The application works with MongoDB listening on standard port 27017, so make sure the Mongo Daemon is running.
 * Go to the server folder and launch it: _node my-server.js_ (default listening port: 8080).
 * Go to the client/test-ionic folder and launch it: _ionic serve -l_.
