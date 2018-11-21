@@ -7,6 +7,13 @@
 </ion-header>
 
 <ion-content padding>
+
+  <ion-item>
+    <ion-label stacked>Set Nickname</ion-label>
+    <ion-input type="text" [(ngModel)]="nickname" placeholder="Nickname"></ion-input>
+  </ion-item>
+  <ion-button expand="block" (click)="joinChat()" [disabled]="(!nickname || nickname == '')">Join Chat as {{ nickname }}</ion-button>
+
   <form [formGroup]="ipAddressForm">
     <ion-item>
       <ion-label position="fixed">Server IP</ion-label>

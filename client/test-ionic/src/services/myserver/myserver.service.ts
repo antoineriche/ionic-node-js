@@ -10,7 +10,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 export class MyserverService {
 
   constructor(private http: HttpClient) {
-    console.log('Hello MyserverService Provider');
+    console.log('Hello MyserverService');
   }
 
   private handleError(error: HttpErrorResponse) {

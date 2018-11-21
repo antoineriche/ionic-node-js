@@ -11,11 +11,20 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { socketConfig } from '../environments/environment';
+
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    HttpClientModule,
+    SocketIoModule.forRoot(socketConfig),
+  ],
   providers: [
     StatusBar,
     SplashScreen,

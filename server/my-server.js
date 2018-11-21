@@ -7,7 +7,7 @@ var server = http.Server(app);
 var bodyParser = require('body-parser');
 var request = require('request');
 var mymongo = require('./mymongo');
-
+var io = require('socket.io')(server);
 
 var MongoClient = require('mongodb').MongoClient;
 var mongoUrl = "mongodb://localhost:27017/mydb";
@@ -85,6 +85,19 @@ app.get('/', function(req, res){
 	mymongo.postData(data, function(json){
 		res.json(json);
 	});
+});
+
+// io.set('origins', '*');
+
+io.on('connection', (socket) => {
+	console.log('new user connected');
+	io.emit("logged_in", "anonymous logged in");
+
+	socket.on('set-alias', function(login){
+		console.log('anonymous is: ' + login);
+		socket.emit('message', 'dégage');
+	});
+
 });
 
 server.listen(8080, function(){

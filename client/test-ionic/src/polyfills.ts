@@ -74,6 +74,12 @@
  */
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 
+/*
+To deal with global issue of ng-socket-io
+https://github.com/rodgc/ngx-socket-io/issues/5
+*/
+(window as any).global = window
+
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
