@@ -1,5 +1,6 @@
-#!/bin/bash 
+#!/bin/bash
 
+#ENV VARIABLES
 SERVER_FOLDER=./server;
 MONGODB_FOLDER=$SERVER_FOLDER/mongodb;
 CLIENT_FOLDER=./client;
@@ -7,6 +8,7 @@ IONIC_FOLDER=$CLIENT_FOLDER/test-ionic;
 
 [ `uname -s` != "Darwin" ] && return
 
+# (source: https://gist.github.com/bobthecow/757788)
 function tab () {
     local cdto="$PWD"
     local args="$@"
@@ -32,9 +34,12 @@ echo "> start server";
 server_file=$SERVER_FOLDER/my-server.js;
 mongo_file=$MONGODB_FOLDER/bin/mongod;
 
-tab "node $server_file"
+# Launch Node Server
+tab "node $server_file";
 echo "> node server: ok";
-tab "./$mongo_file"
+# Launch Mongo Daemon
+tab "./$mongo_file";
 echo "> mongodb: ok";
-tab "cd $IONIC_FOLDER; ionic serve -l"
+# Launch Ionic client browser
+tab "cd $IONIC_FOLDER; ionic serve -l";
 echo "> client: ok";
