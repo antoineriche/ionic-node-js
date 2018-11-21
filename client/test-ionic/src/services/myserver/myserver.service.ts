@@ -38,7 +38,7 @@ export class MyserverService {
 
   postToServer(ipAddress: string, data: any): Observable<any> {
     console.log('postToServer');
-    var url = "http://"+ipAddress+":8080/sportpoint";
+    var url = "http://"+ipAddress+":8080/posts";
     return this.http.post(url, data).pipe(
       map(this.extractData), catchError(this.handleError)
     );

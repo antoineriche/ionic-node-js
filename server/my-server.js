@@ -75,11 +75,10 @@ app.get('/', function(req, res){
 		console.log(jsonArray.data.length + ' posts for user ' + userId + '.');
 		res.json(jsonArray);
 	});
-});
-
-app.post('/sportpoint', function(req, res){
+})
+.post('/posts', function(req, res){
 	var ip = req.connection.remoteAddress;
-	console.log('POST on /sportpoint from ' + ip);
+	console.log('POST on /posts from ' + ip);
 	console.log(req.body);
 	var data = req.body;
 
