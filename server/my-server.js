@@ -8,6 +8,12 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var mymongo = require('./mymongo');
 var io = require('socket.io')(server);
+var session = require("express-session")({
+    secret: "my-chat-js",
+    resave: true,
+    saveUninitialized: true
+});
+var sharedsession = require("express-socket.io-session");
 
 var MongoClient = require('mongodb').MongoClient;
 var mongoUrl = "mongodb://localhost:27017/mydb";
@@ -17,6 +23,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false})); 
 app.use(cors());
 app.options('*', cors());
+
+// Use express-session middleware for express
+app.use(session);
 
 app.get('/', function(req, res){
 	var ip = req.connection.remoteAddress;
@@ -89,13 +98,29 @@ app.get('/', function(req, res){
 
 // io.set('origins', '*');
 
+//Use shared session middleware for socket.io setting autoSave:true
+io.use(sharedsession(session, {autoSave:true}));
+
 io.on('connection', (socket) => {
 	console.log('new user connected');
-	io.emit("logged_in", "anonymous logged in");
 
-	socket.on('set-alias', function(login){
+	socket.on('set-login', function(login){
+		socket.handshake.session.login = login;
+	    socket.handshake.session.save();
+
 		console.log('anonymous is: ' + login);
-		socket.emit('message', 'dégage');
+		io.emit('message', {from: "server", content: login + " joined the chat"});
+	});
+
+	socket.on('message', function(msg){
+		var login = socket.handshake.session.login;
+		if(login){
+			console.log(login + ': ' + msg);
+			socket.broadcast.emit('message', {from: login, content: msg});
+		} else {
+			console.log('Unknown client, please set a login.');
+			socket.emit('chat-error', 'Can not send message, please set a login and retry.');
+		}
 	});
 
 });

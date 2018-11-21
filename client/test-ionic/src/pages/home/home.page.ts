@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MyserverService } from '../../services/myserver/myserver.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators, FormArray } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { SocketService } from '../../services/socket/socket.service';
 
 @Component({
   selector: 'app-home',
@@ -22,14 +21,11 @@ export class HomePage {
 
   constructor(
     private myserver: MyserverService,
-    private socketService: SocketService,
     private formBuilder: FormBuilder){ }
 
   ngOnInit(){
-    console.log('ngOnInit');
-    this.socketService.retrieveMessages().subscribe(
-      (data) => console.log(data)
-    );
+    console.log('ngOnInit HomePage');
+
 
     this.ipAddressForm = this.formBuilder.group({
       'ipAddress' : ["192.168.1.91", [ Validators.required ] ],
@@ -109,10 +105,6 @@ export class HomePage {
         }
       }
     );
-  }
-
-  joinChat(){
-    this.socketService.registerForChatService(this.nickname);
   }
 
   friendlyDate(date: number){

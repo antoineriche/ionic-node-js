@@ -14,7 +14,7 @@ export class SocketService {
   registerForChatService(login: string) : void {
     console.log('registerForChatService');
     this.socket.connect();
-    this.socket.emit('set-alias', login);
+    this.socket.emit('set-login', login);
   }
 
   retrieveMessages() : Observable {
@@ -25,9 +25,16 @@ export class SocketService {
     });
   }
 
-  addMessage(message : string) : void {
+  handleSocketError(): Observable {
+    console.log('handleSocketError');
+    return new Observable((observer) => {
+       this.socket.on('chat-error', (error) => observer.next(error));
+    });
+  }
+
+  sendMessage(message: string) : void {
     console.log('addMessage');
-    this.socket.emit('add-message', {message: message });
+    this.socket.emit('message', message);
   }
 
   logOut() : void {

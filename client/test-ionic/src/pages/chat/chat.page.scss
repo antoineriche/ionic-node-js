@@ -1,0 +1,10 @@
+#content-container{
+  display: flex;
+  flex-flow: column;
+  height: 96%;
+}
+
+.fill-height {
+  background-color: red;
+  flex-grow: 1 !important;
+}
