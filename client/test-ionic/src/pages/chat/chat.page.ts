@@ -30,6 +30,7 @@ export class ChatPage {
   timeoutInfo : any;
   timeoutErro : any;
   isConnected : boolean;
+  pendingMsgs :  any[] = [];
 
 
   constructor(
@@ -58,6 +59,21 @@ export class ChatPage {
       (error) => { this.displayError(error); }
     );
 
+    this.socketService.isConnected().subscribe(
+      (connected) => {
+        console.log('isConnected: ' + connected);
+        this.isConnected = connected;
+        if(this.isConnected){
+          this.socketService.reconnectToServer();
+          if(this.pendingMsgs.length > 0){
+            console.log(this.pendingMsgs.length + ' msgs to send.');
+            this.pendingMsgs.forEach((msg) => this.socketService.sendMessage(msg.content.message));
+            this.pendingMsgs = [];
+          }
+        }
+      }
+    );
+
     let indexColor = Math.floor(Math.random() * (COLORS.length - 0)) + 0;
     this.msgColor = COLORS[indexColor].code;
     this.style = {'background-color': this.msgColor};
@@ -65,17 +81,22 @@ export class ChatPage {
   }
 
   sendMessage(){
-    let msg = {
+
+    var msg = {
       content: {
         from: this.login,
         message: this.chatMessage,
         date: new Date().getTime()
-      }
+      },
+      key: 0
     }
     this.chatMsgs.push(msg);
 
-    if(!this.socketService.sendMessage(this.chatMessage)){
-      this.isConnected = false;
+    if(this.isConnected){
+      this.socketService.sendMessage(this.chatMessage);
+    } else {
+      msg.key = this.pendingMsgs.length;
+      this.pendingMsgs.push(msg);
       this.displayError({type: "You're not connected."});
     }
 
