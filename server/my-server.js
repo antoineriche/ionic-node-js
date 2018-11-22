@@ -5,8 +5,10 @@ var https = require('https');
 var http = require('http');
 var server = http.Server(app);
 var bodyParser = require('body-parser');
+var ent = require('ent');
 var request = require('request');
 var mymongo = require('./mymongo');
+var chatsocket = require('./chatsocket');
 var io = require('socket.io')(server);
 var session = require("express-session")({
     secret: "my-chat-js",
@@ -14,9 +16,6 @@ var session = require("express-session")({
     saveUninitialized: true
 });
 var sharedsession = require("express-socket.io-session");
-
-var MongoClient = require('mongodb').MongoClient;
-var mongoUrl = "mongodb://localhost:27017/mydb";
 
 console.log('start my-server');
 app.use(bodyParser.json());
@@ -96,7 +95,6 @@ app.get('/', function(req, res){
 	});
 });
 
-// io.set('origins', '*');
 
 //Use shared session middleware for socket.io setting autoSave:true
 io.use(sharedsession(session, {autoSave:true}));
@@ -104,25 +102,47 @@ io.use(sharedsession(session, {autoSave:true}));
 io.on('connection', (socket) => {
 	console.log('new user connected');
 
-	socket.on('set-login', function(login){
+	socket.on('chat-login', function(login){
+		// var login = ent.encode(login);
 		socket.handshake.session.login = login;
 	    socket.handshake.session.save();
-
-		console.log('anonymous is: ' + login);
-		io.emit('message', {from: "server", content: login + " joined the chat"});
-	});
-
-	socket.on('message', function(msg){
-		var login = socket.handshake.session.login;
-		if(login){
-			console.log(login + ': ' + msg);
-			socket.broadcast.emit('message', {from: login, content: msg});
+	    if(login != 'server'){
+			console.log('anonymous is: ' + login);
+			var msg = chatsocket.signInMessage(login);
+			io.emit(chatsocket.CHAT_INFO, msg);
 		} else {
-			console.log('Unknown client, please set a login.');
-			socket.emit('chat-error', 'Can not send message, please set a login and retry.');
+			console.log('forbidden login: ' + login);
+			var msg = chatsocket.forbiddenLoginMessage(login);
+			socket.emit(chatsocket.CHAT_ERROR, msg);
 		}
 	});
 
+	socket.on('log-out', function(){
+		var login = socket.handshake.session.login;
+		console.log(login + ' logged out.');
+		if(login){
+			var msg = chatsocket.signOutMessage(login);
+			io.emit(chatsocket.CHAT_INFO, msg);
+		}
+	});
+
+	socket.on('disconnect', function(){
+		console.log('onDisconnect');
+	})
+
+	socket.on('chat-message', function(msg){
+		var login = socket.handshake.session.login;
+		// var msg = ent.encode(msg);
+		if(login){
+			console.log(login + ': ' + msg);
+			var msg = chatsocket.newChatMessage(login, msg);
+			socket.broadcast.emit(chatsocket.CHAT_MSG, msg);
+		} else {
+			console.log("Can't forward message: unknown client.");		
+			var msg = chatsocket.unknownClient();
+			socket.emit(chatsocket.CHAT_ERROR, msg);
+		}
+	});
 });
 
 server.listen(8080, function(){

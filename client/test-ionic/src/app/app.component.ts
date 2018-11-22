@@ -13,7 +13,7 @@ export class AppComponent {
   public appPages = [
     // { title: 'Home', url: '', icon: 'home' },
     { title: 'Posts', url: '', icon: 'speedometer' },
-    { title: 'Chat', url: '/chat', icon: 'speedometer' },
+    { title: 'Chat', url: '/chatpicker', icon: 'speedometer' },
   ];
 
   constructor(

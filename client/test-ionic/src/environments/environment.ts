@@ -7,7 +7,7 @@ export const environment = {
 };
 
 export const socketConfig = {
-  url: 'http://localhost:8080',
+  url: 'http://192.168.1.91:8080',
   options: {}
 };
 

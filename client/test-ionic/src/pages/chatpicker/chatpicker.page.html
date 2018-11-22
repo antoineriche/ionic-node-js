@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Chat</ion-title>
+    <ion-buttons slot="end">
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item lines="none" class="my-grid">
+    <ion-label position="fixed">Login</ion-label>
+    <ion-input type="text" [(ngModel)]="nickname" placeholder="Enter a nickname" (ionChange)=isValidLogin()></ion-input>
+  </ion-item>
+
+  <ion-card *ngFor="let room of chatRooms">
+    <ion-card-header>
+      <ion-card-subtitle>{{room.name}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item lines="none">
+        {{room.description}}
+        <ion-button slot="end" (click)="joinRoom(room.id)" [disabled]="!loginValid"> GO </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

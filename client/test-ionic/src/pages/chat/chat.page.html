@@ -1,50 +1,36 @@
-<ion-header class="header">
-  <ion-toolbar color="primary">
+<ion-header>
+  <ion-toolbar color="primary" class="header">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Chat</ion-title>
-    <ion-buttons slot="end">
-      <ion-button ion-button icon-only (click)="sendMessage()">
-        <ion-icon name="funnel"></ion-icon>
+      <ion-button icon-only (click)="back()">
+        <ion-icon name="arrow-round-back"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <ion-title>Chat - {{this.room}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-spinner [hidden]="isConnected" color="warning" name="bubbles"></ion-spinner>
+    </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-grid>
-      <ion-row align-items-center>
-        <ion-col size="3">
-          <ion-item lines="none">
-            <ion-label>Login</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col size="7">
-          <ion-item lines="none">
-            <ion-input type="text" [(ngModel)]="nickname" placeholder="Enter a nickname" (keyup.enter)="joinChat()"></ion-input>
-          </ion-item>
-        </ion-col>
-        <ion-col size="2">
-          <ion-button expand="block" (click)="joinChat()" [disabled]="(!nickname || nickname == '')">OK</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
+  <div *ngIf="info" class="alert alert-info">
+    {{info.message}}
+  </div>
+  <div *ngIf="error" class="alert alert-error">
+    {{error.type}}
+  </div>
 </ion-header>
-
 
 <ion-content>
 
-  <ion-list>
-    <ion-card *ngFor="let msg of chatMsgs">
-      <ion-card-header *ngIf="msg.from != 'server'">
-        <ion-card-subtitle>{{msg.from}}</ion-card-subtitle>
-        <ion-card-title>{{msg.content}}</ion-card-title>
-      </ion-card-header>
+  <ion-list lines="none">
+    <ion-item *ngFor="let msg of chatMsgs" class="my-item" lines="none">
 
-      <ion-card-header *ngIf="msg.from == 'server'">
-        <ion-card-subtitle>{{msg.content}}</ion-card-subtitle>
-      </ion-card-header>
-    </ion-card>
+      <div [slot]="isMe(msg) ? 'end' : 'start'" [class]="isMe(msg) ? 'chat-msg me' : 'chat-msg other'">
+        <div *ngIf="!isMe(msg)" class="author">
+          {{msg.content.from}}
+        </div>
+        {{msg.content.message}}
+      </div>
+    </ion-item>
+
   </ion-list>
 
 </ion-content>
@@ -55,11 +41,11 @@
       <ion-row>
         <ion-col size="9">
           <ion-item lines="none">
-            <ion-input type="text" [(ngModel)]="chatMessage" placeholder="Say something" (keyup.enter)="sendMessage()"></ion-input>
+            <ion-input type="text" [(ngModel)]="chatMessage" placeholder="Say something" (keyup.enter)="sendMessage()" (ionChange)=isValidMsg()></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size="3">
-          <ion-button expand="block" (click)="sendMessage()" [disabled]="(!chatMessage || chatMessage == '')">Envoyer</ion-button>
+          <ion-button expand="block" (click)="sendMessage()" [disabled]="!msgValid">Envoyer</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
