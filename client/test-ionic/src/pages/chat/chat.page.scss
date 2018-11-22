@@ -1,10 +1,7 @@
-#content-container{
-  display: flex;
-  flex-flow: column;
-  height: 96%;
+.header {
+  border-bottom: solid 2px red;
 }
 
-.fill-height {
-  background-color: red;
-  flex-grow: 1 !important;
+.footer {
+  border-top: solid 2px red;
 }

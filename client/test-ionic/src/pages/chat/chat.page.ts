@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SocketService } from '../../services/socket/socket.service';
 import { ViewChild, ElementRef } from '@angular/core';
 import { NavController, Content, List } from '@ionic/angular';
@@ -13,18 +13,18 @@ export class ChatPage implements OnInit {
   @ViewChild(Content) content: Content;
   chatMsgs: any[] = [];
   error:    any;
-  // mutationObserver: MutationObserver;
 
   constructor(
     private socketService: SocketService) { }
 
   ngOnInit() {
     console.log('ngOnInit ChatPage');
+
     this.socketService.retrieveMessages().subscribe(
       (data) => {
         console.log(data);
         this.chatMsgs.push(data);
-        this.content.scrollToBottom();
+        this.scrollToBottom(this.content);
       }
     );
     this.socketService.handleSocketError().subscribe(
@@ -35,9 +35,15 @@ export class ChatPage implements OnInit {
   sendMessage(){
     this.error = null;
     this.socketService.sendMessage(this.chatMessage);
-    this.chatMsgs.push({from: this.nickname, content: this.chatMessage});
+    let msg = {from: this.nickname, content: this.chatMessage};
+    this.chatMsgs.push(msg);
+
     this.chatMessage = '';
-    this.content.scrollToBottom();
+    this.scrollToBottom(this.content);
+  }
+
+  scrollToBottom(content){
+    setTimeout(() => content.scrollToBottom(), 100);
   }
 
   joinChat(){
